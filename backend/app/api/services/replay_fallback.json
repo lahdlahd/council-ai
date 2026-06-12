@@ -1,0 +1,306 @@
+{
+  "d11b34a6-4be4-42f0-9a2c-e1f4864b22c0": {
+    "session_id": "d11b34a6-4be4-42f0-9a2c-e1f4864b22c0",
+    "symbol": "BTC",
+    "created_at": "2026-06-10T09:23:43.643001",
+    "market_state": {
+      "symbol": "BTC",
+      "current_price": 43500.0,
+      "price_24h_high": 44200.0,
+      "price_24h_low": 42900.0,
+      "volume_24h": 125000000.0,
+      "volatility": 0.22,
+      "trend_direction": "UP",
+      "market_news_count": 14,
+      "market_conditions": "bullish",
+      "historical_candles": []
+    },
+    "initial_opinions": {
+      "technical_analyst": {
+        "bullish_score": 85.0,
+        "bearish_score": 15.0,
+        "confidence": 80.0,
+        "recommendation": "BUY",
+        "reasoning": "Golden cross on 4h chart with rising RSI indicators support breakout above resistance.",
+        "key_findings": [
+          "RSI breakout",
+          "EMA cross"
+        ],
+        "supporting_data": {}
+      },
+      "news_analyst": {
+        "sentiment_score": 0.65,
+        "confidence": 75.0,
+        "recommendation": "BUY",
+        "reasoning": "Sentiment is highly positive due to heavy ETF net inflows and rumors of corporate treasury buying.",
+        "key_events": [
+          "ETF Net Inflows",
+          "Treasury Rumors"
+        ],
+        "whale_activity": "BUYING",
+        "macro_impact": "Positive structural support"
+      },
+      "quant_analyst": {
+        "probability_score": 72.0,
+        "confidence": 70.0,
+        "recommendation": "BUY",
+        "reasoning": "Historical pattern matches suggest high probability momentum continuation with expected value of 1.4.",
+        "historical_pattern": "Momentum Breakout",
+        "expected_value": 1.4,
+        "correlation_analysis": {}
+      }
+    },
+    "debate_transcript": [
+      {
+        "agent_id": "news_analyst",
+        "agent_name": "News Analyst",
+        "message_type": "ANALYSIS",
+        "content": "Initial Analysis: BUY. Sentiment is highly positive due to heavy ETF net inflows.",
+        "confidence": 0.75,
+        "recommendation": "BUY",
+        "reasoning": {}
+      },
+      {
+        "agent_id": "quant_analyst",
+        "agent_name": "Quant Analyst",
+        "message_type": "ANALYSIS",
+        "content": "Initial Analysis: BUY. Expected value suggests upward bias.",
+        "confidence": 0.7,
+        "recommendation": "BUY",
+        "reasoning": {}
+      },
+      {
+        "agent_id": "technical_analyst",
+        "agent_name": "Technical Analyst",
+        "message_type": "AGREEMENT",
+        "content": "I agree with the News Analyst. The heavy volume breakout matches the structural ETF flows.",
+        "confidence": 0.85,
+        "recommendation": "BUY",
+        "reasoning": {}
+      }
+    ],
+    "voting_tally": {
+      "votes": {
+        "technical_analyst": {
+          "vote": "BUY",
+          "weight": 1.2,
+          "confidence": 80.0
+        },
+        "quant_analyst": {
+          "vote": "BUY",
+          "weight": 1.1,
+          "confidence": 72.0
+        },
+        "news_analyst": {
+          "vote": "BUY",
+          "weight": 1.0,
+          "confidence": 75.0
+        }
+      },
+      "proposed_action": "BUY"
+    },
+    "veto_verification": {
+      "risk_score": 25.0,
+      "risk_level": "low",
+      "position_size_recommendation": 15000.0,
+      "max_position_allowed": 0.15,
+      "approved": true,
+      "veto_reason": "Approved: Risk metrics are well within safe thresholds."
+    },
+    "execution_decision": {
+      "action": "BUY",
+      "confidence_score": 88.65,
+      "confidence_factors": {
+        "raw_scores": {
+          "agent_agreement": 100.0,
+          "risk_score_factor": 75.0,
+          "volatility_factor": 78.0,
+          "sentiment_stability": 75.0,
+          "historical_accuracy": 69.0
+        },
+        "weighted_contributions": {
+          "agent_agreement": 40.0,
+          "risk_score_factor": 15.0,
+          "volatility_factor": 11.7,
+          "sentiment_stability": 11.25,
+          "historical_accuracy": 6.9
+        },
+        "total_score": 84.85
+      },
+      "position_size": {
+        "percentage_of_portfolio": 12.0,
+        "quantity": 0.2758,
+        "entry_price": 43500.0,
+        "target_price": 46500.0,
+        "stop_loss": 41800.0
+      },
+      "reasoning": "The committee reached a unanimous agreement to BUY BTC. Positive ETF inflows support technical breakout signals. Low risk volatility allows high positioning.",
+      "key_factors": [
+        "Unanimous consensus",
+        "ETF inflows breakout",
+        "Low risk profile"
+      ]
+    },
+    "trade_result": {
+      "status": "completed",
+      "entry_price": 43500.0,
+      "quantity": 0.2758,
+      "exit_price": 46500.0,
+      "exit_timestamp": "2026-06-11T09:23:43.643001",
+      "realized_pnl": 827.4,
+      "notes": "Target hit. Trade exited automatically at $46,500."
+    }
+  },
+  "bc3f4124-7f12-4cf4-912b-2a21b44b20cf": {
+    "session_id": "bc3f4124-7f12-4cf4-912b-2a21b44b20cf",
+    "symbol": "ETH",
+    "created_at": "2026-06-08T09:23:43.643001",
+    "market_state": {
+      "symbol": "ETH",
+      "current_price": 2800.0,
+      "price_24h_high": 2950.0,
+      "price_24h_low": 2600.0,
+      "volume_24h": 450000000.0,
+      "volatility": 0.55,
+      "trend_direction": "DOWN",
+      "market_news_count": 25,
+      "market_conditions": "volatile",
+      "historical_candles": []
+    },
+    "initial_opinions": {
+      "technical_analyst": {
+        "bullish_score": 65.0,
+        "bearish_score": 35.0,
+        "confidence": 60.0,
+        "recommendation": "BUY",
+        "reasoning": "Aggressive oversold bounce support at $2,800. Fast reversal likely.",
+        "key_findings": [
+          "Support bounce",
+          "Oversold RSI"
+        ],
+        "supporting_data": {}
+      },
+      "news_analyst": {
+        "sentiment_score": -0.4,
+        "confidence": 70.0,
+        "recommendation": "HOLD",
+        "reasoning": "High fear surrounding a major smart contract exploit report. Sentiment is highly negative.",
+        "key_events": [
+          "Exploit reports",
+          "FUD selling"
+        ],
+        "whale_activity": "SELLING",
+        "macro_impact": "Critical negative catalyst"
+      },
+      "quant_analyst": {
+        "probability_score": 52.0,
+        "confidence": 60.0,
+        "recommendation": "HOLD",
+        "reasoning": "Model reports low probability of bounce success due to high drawdown speed.",
+        "historical_pattern": "Falling Knife",
+        "expected_value": -0.1,
+        "correlation_analysis": {}
+      }
+    },
+    "debate_transcript": [
+      {
+        "agent_id": "technical_analyst",
+        "agent_name": "Technical Analyst",
+        "message_type": "ANALYSIS",
+        "content": "Initial Analysis: BUY. Oversold support indicates bounce potential.",
+        "confidence": 0.6,
+        "recommendation": "BUY",
+        "reasoning": {}
+      },
+      {
+        "agent_id": "news_analyst",
+        "agent_name": "News Analyst",
+        "message_type": "CHALLENGE",
+        "content": "I challenge Technical Analyst. We are dealing with an active exploit report; buying now is highly speculative.",
+        "confidence": 0.7,
+        "recommendation": "HOLD",
+        "reasoning": {}
+      },
+      {
+        "agent_id": "technical_analyst",
+        "agent_name": "Technical Analyst",
+        "message_type": "REVISION",
+        "content": "Given the exploit detail, I will revise my recommendation to HOLD until smart contract integrity is confirmed.",
+        "confidence": 0.7,
+        "recommendation": "HOLD",
+        "reasoning": {}
+      }
+    ],
+    "voting_tally": {
+      "votes": {
+        "technical_analyst": {
+          "vote": "HOLD",
+          "weight": 1.2,
+          "confidence": 70.0
+        },
+        "quant_analyst": {
+          "vote": "HOLD",
+          "weight": 1.1,
+          "confidence": 60.0
+        },
+        "news_analyst": {
+          "vote": "HOLD",
+          "weight": 1.0,
+          "confidence": 70.0
+        }
+      },
+      "proposed_action": "HOLD"
+    },
+    "veto_verification": {
+      "risk_score": 85.0,
+      "risk_level": "critical",
+      "position_size_recommendation": 0.0,
+      "max_position_allowed": 0.0,
+      "approved": false,
+      "veto_reason": "VETO: Volatility is 0.55 and risk score is 85/100, which exceeds maximum drawdown limits. Exploits present systemic risk."
+    },
+    "execution_decision": {
+      "action": "HOLD",
+      "confidence_score": 45.3,
+      "confidence_factors": {
+        "raw_scores": {
+          "agent_agreement": 100.0,
+          "risk_score_factor": 15.0,
+          "volatility_factor": 45.0,
+          "sentiment_stability": 40.0,
+          "historical_accuracy": 69.0
+        },
+        "weighted_contributions": {
+          "agent_agreement": 40.0,
+          "risk_score_factor": 3.0,
+          "volatility_factor": 6.75,
+          "sentiment_stability": 6.0,
+          "historical_accuracy": 6.9
+        },
+        "total_score": 62.65
+      },
+      "position_size": {
+        "percentage_of_portfolio": 0.0,
+        "quantity": 0.0,
+        "entry_price": 2800.0,
+        "target_price": null,
+        "stop_loss": null
+      },
+      "reasoning": "The trade proposal was rejected due to a Risk Manager VETO. The committee agreed on HOLD. Smart contract exploit reports and 55% volatility create critical downside risk.",
+      "key_factors": [
+        "Risk Manager VETO",
+        "Exploit risk",
+        "High market volatility"
+      ]
+    },
+    "trade_result": {
+      "status": "completed",
+      "entry_price": 2800.0,
+      "quantity": 0.0,
+      "exit_price": 3000.0,
+      "exit_timestamp": "2026-06-12T09:23:43.807493",
+      "realized_pnl": 0.0,
+      "notes": "Demo simulated exit. Price moved from $2800.00 to $3000.00."
+    }
+  }
+}
