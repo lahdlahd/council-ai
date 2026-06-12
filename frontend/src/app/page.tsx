@@ -19,6 +19,8 @@ export default function Dashboard() {
   
   const [marketState, setMarketState] = useState<any>(null);
   const [debateTranscript, setDebateTranscript] = useState<AgentMessage[]>([]);
+  const [messageQueue, setMessageQueue] = useState<AgentMessage[]>([]);
+  const [typingAgent, setTypingAgent] = useState<AgentMessage | null>(null);
   const [votingTally, setVotingTally] = useState<any>(null);
   const [vetoVerification, setVetoVerification] = useState<any>(null);
   const [executionDecision, setExecutionDecision] = useState<any>(null);
@@ -40,6 +42,8 @@ export default function Dashboard() {
     // Reset state
     setMarketState(null);
     setDebateTranscript([]);
+    setMessageQueue([]);
+    setTypingAgent(null);
     setVotingTally(null);
     setVetoVerification(null);
     setExecutionDecision(null);
@@ -88,7 +92,7 @@ export default function Dashboard() {
         setMarketState(event.data);
         break;
       case "AGENT_MESSAGE":
-        setDebateTranscript(prev => [...prev, event.data]);
+        setMessageQueue(prev => [...prev, event.data]);
         break;
       case "VOTING_COMPLETE":
         setVotingTally(event.data);
@@ -108,6 +112,23 @@ export default function Dashboard() {
         break;
     }
   };
+
+  // Process message queue for typing animation
+  useEffect(() => {
+    if (messageQueue.length > 0 && !typingAgent) {
+      const nextMsg = messageQueue[0];
+      setTypingAgent(nextMsg);
+      setMessageQueue(prev => prev.slice(1));
+      
+      // Calculate delay based on message length (e.g., 20ms per char, min 1s, max 3s)
+      const delay = Math.min(Math.max(nextMsg.content.length * 20, 1000), 3000);
+      
+      setTimeout(() => {
+        setDebateTranscript(prev => [...prev, nextMsg]);
+        setTypingAgent(null);
+      }, delay);
+    }
+  }, [messageQueue, typingAgent]);
 
   const getAgentColor = (name: string) => {
     if (name.includes("Technical")) return "bg-blue-100 text-blue-700 border-blue-200";
@@ -290,6 +311,25 @@ export default function Dashboard() {
                   </div>
                 </div>
               ))
+            )}
+
+            {/* Typing Indicator */}
+            {typingAgent && (
+              <div className="flex flex-col gap-1 max-w-[85%] animate-in fade-in slide-in-from-bottom-2 opacity-70">
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${getAgentColor(typingAgent.agent_name)}`}>
+                    {typingAgent.agent_name}
+                  </span>
+                  <span className="text-xs font-medium text-gray-500 italic flex items-center gap-1">
+                    typing
+                    <span className="flex space-x-1">
+                      <span className="w-1 h-1 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                      <span className="w-1 h-1 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                      <span className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"></span>
+                    </span>
+                  </span>
+                </div>
+              </div>
             )}
 
             {/* Voting Consensus Block */}
