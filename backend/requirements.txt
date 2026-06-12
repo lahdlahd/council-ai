@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+httpx
+pydantic
+supabase
+numpy
+langchain
+langchain-openai
+langchain-community
+langgraph
