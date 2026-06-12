@@ -151,3 +151,67 @@ class BitgetService:
                 "size": size,
                 "notes": f"Bitget network error: {e}. Fallback mock activated."
             }
+
+    def get_market_data(self, symbol: str) -> Dict[str, Any]:
+        """
+        Fetches live ticker data from Bitget Spot Market API and returns market metrics.
+        """
+        pair = f"{symbol.upper()}USDT"
+        request_path = f"/api/v2/spot/market/tickers?symbol={pair}"
+        
+        try:
+            with httpx.Client() as client:
+                response = client.get(
+                    f"{self.base_url}{request_path}",
+                    timeout=5.0
+                )
+            
+            res_json = response.json()
+            if response.status_code == 200 and res_json.get("code") == "00000":
+                data = res_json.get("data", [])
+                if data:
+                    ticker = data[0]
+                    high24h = float(ticker.get("high24h", 0))
+                    low24h = float(ticker.get("low24h", 0))
+                    current_price = float(ticker.get("lastPr", 0))
+                    base_volume = float(ticker.get("baseVolume", 0))
+                    
+                    # Calculate basic volatility metric based on 24h range vs current price
+                    volatility = 0.0
+                    if low24h > 0:
+                        volatility = round((high24h - low24h) / low24h, 4)
+                        
+                    trend_direction = "UP" if float(ticker.get("open", current_price)) < current_price else "DOWN"
+                    market_conditions = "volatile" if volatility > 0.10 else "stable"
+                    if trend_direction == "UP" and volatility < 0.15:
+                        market_conditions = "bullish"
+                    elif trend_direction == "DOWN" and volatility < 0.15:
+                        market_conditions = "bearish"
+                        
+                    return {
+                        "symbol": symbol.upper(),
+                        "current_price": current_price,
+                        "price_24h_high": high24h,
+                        "price_24h_low": low24h,
+                        "volume_24h": base_volume * current_price, # rough USD volume
+                        "volatility": volatility,
+                        "trend_direction": trend_direction,
+                        "market_news_count": 0, # To be filled by news analyst
+                        "market_conditions": market_conditions
+                    }
+        except Exception as e:
+            logger.error(f"Failed to fetch live market data for {symbol}: {e}")
+            
+        # Fallback to safe defaults if API fails or pair not found
+        return {
+            "symbol": symbol.upper(),
+            "current_price": 0.0,
+            "price_24h_high": 0.0,
+            "price_24h_low": 0.0,
+            "volume_24h": 0.0,
+            "volatility": 0.10,
+            "trend_direction": "NEUTRAL",
+            "market_news_count": 0,
+            "market_conditions": "stable"
+        }
+

@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #111315;
-  --foreground: #F3F4F6;
-  --primary: #111315;
-  --secondary: #1B1F24;
-  --accent: #D4A24C;
-  --success: #1D9B72;
-  --danger: #A84747;
-  --border-terminal: #2C323B;
+  --background: #F9FAFB;
+  --foreground: #111827;
+  --primary: #FFFFFF;
+  --secondary: #F3F4F6;
+  --accent: #2563EB;
+  --success: #10B981;
+  --danger: #EF4444;
+  --border-terminal: #E5E7EB;
 }
 
 @theme {
@@ -20,7 +20,7 @@
   --color-border-terminal: var(--border-terminal);
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 body {
@@ -30,28 +30,30 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbars for Bloomberg terminal look */
+/* Custom scrollbars for clean fintech look */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #111315;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2C323B;
+  background: #D1D5DB;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4A24C;
+  background: #9CA3AF;
 }
 
 /* Pulse animation for active simulation status */
 @keyframes terminal-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.5; }
 }
 
 .animate-pulse-terminal {

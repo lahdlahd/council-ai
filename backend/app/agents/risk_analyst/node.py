@@ -113,6 +113,16 @@ class RiskManagerNode:
                 current_equity=current_equity
             )
             
+            # Fetch past trade context from memory
+            try:
+                from app.agents.memory.memory_manager import AgentMemoryManager
+                memory_manager = AgentMemoryManager()
+                past_trades = memory_manager.get_similar_trades(market_data.symbol, limit=3)
+                risk_data["historical_trades"] = past_trades
+            except Exception as e:
+                logger.warning(f"Failed to fetch historical trades from memory: {e}")
+                risk_data["historical_trades"] = []
+            
             # Make veto decision (with LLM synthesis)
             assessment = self._make_veto_decision(
                 market_data=market_data,
@@ -283,17 +293,21 @@ Current Price: ${current_price:.2f}
 Risk Assessment:
 {risk_summary}
 
+Historical Similar Trades:
+{historical_trades}
+
 Your decision criteria:
 1. VETO (approve=false) if: Risk score > 75 OR VaR > 5% of account OR position > 20%
 2. VETO if: Concentration risk already high AND adding more to concentrated position
 3. VETO if: Correlation shows assets moving together AND adding correlated position
-4. APPROVE (approve=true) if: All metrics within acceptable ranges
+4. VETO if: Similar past trades in these market conditions resulted in severe losses.
+5. APPROVE (approve=true) if: All metrics within acceptable ranges
 
 Respond ONLY with this JSON - no other text:
 {{
   "approved": <true or false>,
   "risk_score": <0-100>,
-  "veto_reason": "<If denied, brief reason. If approved, 'Approved' or null>",
+  "veto_reason": "<If denied, brief reason referencing metrics or past trades. If approved, 'Approved' or null>",
   "position_size_recommendation": <max USD position size>,
   "max_position_allowed": <max % of account>
 }}
@@ -302,12 +316,18 @@ Remember: Err on the side of CAUTION. When in doubt, VETO."""
         )
         
         try:
+            # Format historical trades
+            hist_str = "None found."
+            if risk_data.get("historical_trades"):
+                hist_str = json.dumps([t.get("summary", "") for t in risk_data["historical_trades"]], indent=2)
+                
             response = self.llm.invoke(
                 prompt_template.format_prompt(
                     symbol=market_data.symbol,
                     proposed_action=proposed_action,
                     current_price=market_data.current_price,
-                    risk_summary=risk_summary
+                    risk_summary=risk_summary,
+                    historical_trades=hist_str
                 )
             )
             

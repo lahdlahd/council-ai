@@ -37,6 +37,7 @@ mock_output_parsers.JsonOutputParser = JsonOutputParser
 sys.modules['langchain.output_parsers'] = mock_output_parsers
 
 from app.api.routers import replay
+from app.api.routers import stream
 
 app = FastAPI(
     title="Council AI Hedge Fund API",
@@ -55,6 +56,7 @@ app.add_middleware(
 
 # Mount API routers
 app.include_router(replay.router, prefix="/api")
+app.include_router(stream.router, prefix="/api")
 
 @app.get("/")
 def health_check():
