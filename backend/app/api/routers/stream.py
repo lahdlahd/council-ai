@@ -23,9 +23,12 @@ async def generate_debate_stream(symbol: str) -> AsyncGenerator[str, None]:
     try:
         # 1. Fetch live market data
         bitget_service = BitgetService()
-        market_data = bitget_service.get_market_data(symbol)
+        market_data_dict = bitget_service.get_market_data(symbol)
         
-        yield f"data: {json.dumps({'type': 'MARKET_DATA', 'data': market_data})}\n\n"
+        yield f"data: {json.dumps({'type': 'MARKET_DATA', 'data': market_data_dict})}\n\n"
+        
+        from app.agents.schemas import MarketData
+        market_data = MarketData(**market_data_dict)
         
         # 2. Initialize graph
         graph = build_debate_engine_graph()
@@ -49,8 +52,8 @@ async def generate_debate_stream(symbol: str) -> AsyncGenerator[str, None]:
                 # Check for new messages from analyst nodes
                 if "messages" in state_update and len(state_update["messages"]) > 0:
                     latest_msg = state_update["messages"][-1]
-                    # Convert object to dict if needed
-                    msg_dict = latest_msg if isinstance(latest_msg, dict) else latest_msg.model_dump()
+                    # Convert object to dict using model_dump_json to serialize datetimes
+                    msg_dict = json.loads(latest_msg.model_dump_json()) if hasattr(latest_msg, 'model_dump_json') else latest_msg
                     yield f"data: {json.dumps({'type': 'AGENT_MESSAGE', 'node': node_name, 'data': msg_dict})}\n\n"
                     
                 # Check for consensus calculation
@@ -60,20 +63,20 @@ async def generate_debate_stream(symbol: str) -> AsyncGenerator[str, None]:
                 # Check for voting conclusion
                 if node_name == "voting_coordinator" and "proposed_action" in state_update:
                     votes = state_update.get("votes", {})
-                    # Convert Vote objects to dicts
-                    votes_dict = {k: v.model_dump() if hasattr(v, 'model_dump') else v for k, v in votes.items()}
+                    # Convert Vote objects to dicts using model_dump_json
+                    votes_dict = {k: json.loads(v.model_dump_json()) if hasattr(v, 'model_dump_json') else v for k, v in votes.items()}
                     yield f"data: {json.dumps({'type': 'VOTING_COMPLETE', 'data': {'proposed_action': state_update['proposed_action'], 'votes': votes_dict}})}\n\n"
                 
                 # Check for Risk Manager Veto
                 if node_name == "risk_manager" and "risk_assessment" in state_update:
                     risk = state_update["risk_assessment"]
-                    risk_dict = risk.model_dump() if hasattr(risk, 'model_dump') else risk
+                    risk_dict = json.loads(risk.model_dump_json()) if hasattr(risk, 'model_dump_json') else risk
                     yield f"data: {json.dumps({'type': 'RISK_ASSESSMENT', 'data': risk_dict})}\n\n"
                 
                 # Check for Execution Decision
                 if node_name == "execution_agent" and "final_decision" in state_update:
                     decision = state_update["final_decision"]
-                    decision_dict = decision.model_dump() if hasattr(decision, 'model_dump') else decision
+                    decision_dict = json.loads(decision.model_dump_json()) if hasattr(decision, 'model_dump_json') else decision
                     yield f"data: {json.dumps({'type': 'EXECUTION_DECISION', 'data': decision_dict})}\n\n"
                     
                 # Small delay to simulate processing and allow UI typing effects
