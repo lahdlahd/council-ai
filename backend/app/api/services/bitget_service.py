@@ -154,20 +154,42 @@ class BitgetService:
 
     def get_market_data(self, symbol: str) -> Dict[str, Any]:
         """
-        Fetches live ticker data from Bitget Spot Market API and returns market metrics.
+        Fetches live ticker data and historical candles from Bitget Spot Market API and returns market metrics.
         """
         pair = f"{symbol.upper()}USDT"
-        request_path = f"/api/v2/spot/market/tickers?symbol={pair}"
+        ticker_path = f"/api/v2/spot/market/tickers?symbol={pair}"
+        candles_path = f"/api/v2/spot/market/candles?symbol={pair}&granularity=1h&limit=100"
         
         try:
             with httpx.Client() as client:
-                response = client.get(
-                    f"{self.base_url}{request_path}",
-                    timeout=5.0
-                )
+                ticker_response = client.get(f"{self.base_url}{ticker_path}", timeout=5.0)
+                candles_response = client.get(f"{self.base_url}{candles_path}", timeout=5.0)
             
-            res_json = response.json()
-            if response.status_code == 200 and res_json.get("code") == "00000":
+            res_json = ticker_response.json()
+            candles_json = candles_response.json()
+            
+            historical_candles = []
+            if candles_response.status_code == 200 and candles_json.get("code") == "00000":
+                from datetime import datetime
+                # Bitget candle format: [timestamp, open, high, low, close, baseVolume, quoteVolume]
+                for c in candles_json.get("data", []):
+                    try:
+                        historical_candles.append({
+                            "timestamp": datetime.fromtimestamp(int(c[0]) / 1000.0),
+                            "open": float(c[1]),
+                            "high": float(c[2]),
+                            "low": float(c[3]),
+                            "close": float(c[4]),
+                            "volume": float(c[5])
+                        })
+                    except (IndexError, ValueError) as e:
+                        logger.warning(f"Failed to parse candle data {c}: {e}")
+                        continue
+                        
+                # Sort ascending by timestamp
+                historical_candles.sort(key=lambda x: x["timestamp"])
+            
+            if ticker_response.status_code == 200 and res_json.get("code") == "00000":
                 data = res_json.get("data", [])
                 if data:
                     ticker = data[0]
@@ -197,7 +219,8 @@ class BitgetService:
                         "volatility": volatility,
                         "trend_direction": trend_direction,
                         "market_news_count": 0, # To be filled by news analyst
-                        "market_conditions": market_conditions
+                        "market_conditions": market_conditions,
+                        "historical_candles": historical_candles
                     }
         except Exception as e:
             logger.error(f"Failed to fetch live market data for {symbol}: {e}")
@@ -212,6 +235,7 @@ class BitgetService:
             "volatility": 0.10,
             "trend_direction": "NEUTRAL",
             "market_news_count": 0,
-            "market_conditions": "stable"
+            "market_conditions": "stable",
+            "historical_candles": []
         }
 
