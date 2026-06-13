@@ -232,7 +232,7 @@ Provide analysis in this exact JSON format:
   "key_events": [<list of 2-3 major events>],
   "whale_activity": "<high|medium|low|none>",
   "macro_impact": "<critical|high|medium|low|none>",
-  "reasoning": "<3-4 sentence explanation>"
+  "reasoning": "<1 short, punchy sentence (e.g. 'ETF inflows support momentum.')>"
 }}
 
 Remember:

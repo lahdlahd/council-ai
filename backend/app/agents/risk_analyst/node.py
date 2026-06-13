@@ -24,7 +24,7 @@ import json
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
-from app.agents.schemas import RiskAssessment, MarketData
+from app.agents.schemas import RiskAssessment, MarketData, AgentMessage
 from app.agents.tools.risk_tools import RiskTools
 
 logger = logging.getLogger(__name__)
@@ -138,6 +138,20 @@ class RiskManagerNode:
             
             state["risk_assessment"] = assessment
             state["error_log"].append(f"Risk Manager: {assessment.veto_reason}")
+            
+            # Append message to transcript for UI
+            msg = AgentMessage(
+                agent_id="risk_manager",
+                agent_name="Risk Manager",
+                message_type="ASSESSMENT",
+                content=assessment.veto_reason,
+                confidence=assessment.risk_score / 100.0,
+                recommendation="VETO" if not assessment.approved else "APPROVE",
+                reasoning={"risk_score": assessment.risk_score}
+            )
+            if "messages" not in state:
+                state["messages"] = []
+            state["messages"] = state["messages"] + [msg]
             
             return state
             
@@ -307,7 +321,7 @@ Respond ONLY with this JSON - no other text:
 {{
   "approved": <true or false>,
   "risk_score": <0-100>,
-  "veto_reason": "<If denied, brief reason referencing metrics or past trades. If approved, 'Approved' or null>",
+  "veto_reason": "<1 short, punchy sentence (e.g. 'Volatility remains elevated.')>",
   "position_size_recommendation": <max USD position size>,
   "max_position_allowed": <max % of account>
 }}

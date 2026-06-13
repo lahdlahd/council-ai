@@ -252,7 +252,7 @@ Provide analysis in this exact JSON format:
   "historical_pattern": "<description of identified pattern>",
   "expected_value": <decimal, e.g., 0.0234 for 2.34%>,
   "correlation_analysis": "<brief analysis of relationships>",
-  "reasoning": "<3-4 sentence explanation of quant analysis>"
+  "reasoning": "<1 short, punchy sentence (e.g. 'Historical probability: 64%')>"
 }}
 
 Remember:

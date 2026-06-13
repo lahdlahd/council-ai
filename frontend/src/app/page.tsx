@@ -306,8 +306,8 @@ export default function Dashboard() {
                       {msg.recommendation} {(msg.confidence * 100).toFixed(0)}%
                     </span>
                   </div>
-                  <div className="bg-gray-50 border border-gray-100 text-gray-700 text-sm p-3 rounded-lg rounded-tl-none shadow-sm leading-relaxed">
-                    {msg.content}
+                  <div className="bg-gray-50 border border-gray-100 text-gray-700 text-sm p-3 rounded-lg rounded-tl-none shadow-sm leading-relaxed italic">
+                    "{msg.content}"
                   </div>
                 </div>
               ))

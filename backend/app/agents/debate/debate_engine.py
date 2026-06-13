@@ -109,7 +109,7 @@ class DebateAgentWrapper:
                 agent_id=self.agent_name.lower().replace(" ", "_"),
                 agent_name=self.agent_name,
                 message_type="ANALYSIS",
-                content=f"Initial Analysis: {analysis.recommendation} (Confidence: {analysis.confidence:.1f}%). Reasoning: {analysis.reasoning}",
+                content=analysis.reasoning,
                 confidence=analysis.confidence / 100.0,
                 recommendation=analysis.recommendation,
                 reasoning={

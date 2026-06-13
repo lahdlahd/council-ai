@@ -28,7 +28,8 @@ from app.agents.schemas import (
     TechnicalAnalysis,
     NewsAnalysis,
     QuantAnalysis,
-    RiskAssessment
+    RiskAssessment,
+    AgentMessage
 )
 
 logger = logging.getLogger(__name__)
@@ -205,6 +206,20 @@ class ExecutionAgentNode:
             
             # Update proposed_action (which is needed by other steps or backend)
             state["proposed_action"] = final_action
+            
+            # Append message to transcript for UI
+            msg = AgentMessage(
+                agent_id="execution_agent",
+                agent_name="Execution Agent",
+                message_type="SYNTHESIS",
+                content=synthesis["reasoning"],
+                confidence=confidence_score / 100.0,
+                recommendation=final_action,
+                reasoning={"key_factors": synthesis["key_factors"]}
+            )
+            if "messages" not in state:
+                state["messages"] = []
+            state["messages"] = state["messages"] + [msg]
             
             # Place live/mock order on Bitget if action is BUY or SELL
             if final_action in ["BUY", "SELL"]:
@@ -541,7 +556,7 @@ Committee Member Analyses:
  
 Provide the final synthesis in this exact JSON format:
 {{
-  "reasoning": "<A detailed, professional 3-4 sentence paragraph that consolidates the viewpoints, explains any conflicts, and provides institutional justification for the final action and the level of confidence in the decision>",
+  "reasoning": "<1 short, punchy sentence (e.g. 'Consensus reached.')>",
   "key_factors": [
     "<Key factor 1 explaining the decision>",
     "<Key factor 2 explaining the decision>",

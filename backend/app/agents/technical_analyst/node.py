@@ -239,7 +239,7 @@ Provide analysis in this exact JSON format:
   "bearish_score": <0-100>,
   "confidence": <0-100>,
   "recommendation": "<BUY|SELL|HOLD>",
-  "reasoning": "<2-3 sentence explanation>",
+  "reasoning": "<1 short, punchy sentence (e.g. 'BTC broke resistance.')>",
   "key_findings": [<list of 3-4 key observations>]
 }}
 
